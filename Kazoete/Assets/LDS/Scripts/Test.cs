@@ -8,13 +8,14 @@ public class Test : MonoBehaviour {
 
     //Test Manager
     public int wrongThreshold = 3;
-    public Text score;
-    public Text level;
-    public Text number;
+    public Text score, level, number, gameOverScore;
     public GameObject[] buttons;
     public int gameMode = 3; //1 = Romanji, 2 = Kana, 3 = Kanji
+    public AudioSource audioSource;
+    public AudioClip wrongFX, rightFX;
+    public GameObject Game, GameOver;
 
-    private int currentLevel = 4;
+    private int currentLevel = 1;
     private int highscore = 0;
 
     //Test
@@ -24,6 +25,8 @@ public class Test : MonoBehaviour {
     // Use this for initialization
     void Start () {
         gameMode = PlayerPrefs.GetInt("game_mode");
+        Game.SetActive(true);
+        GameOver.SetActive(false);
         ScoreBoard();
         GetQuestion();
     }
@@ -261,20 +264,22 @@ public class Test : MonoBehaviour {
     {
         if(answer == correctAnswer)
         {
-            //Play correct noise
-            print("good");
+            audioSource.clip = rightFX;
+            audioSource.Play();
             highscore++;
             GetQuestion();
         }
         else
         {
-            //play wrong noise
-            print("No!");
+            audioSource.clip = wrongFX;
+            audioSource.Play();
             wrongThreshold--;
             ScoreBoard();
             if(wrongThreshold <= 0)
             {
-                //Initiate Game over
+                Game.SetActive(false);
+                GameOver.SetActive(true);
+                gameOverScore.text = highscore.ToString();
             }
         }
     }

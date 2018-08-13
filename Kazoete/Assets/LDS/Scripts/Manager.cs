@@ -15,4 +15,10 @@ public class Manager : MonoBehaviour {
         PlayerPrefs.SetInt("game_mode", mode);
         SceneManager.LoadScene("Game");
     }
+
+    public void LevelSelect(string level)
+    {
+        SceneManager.LoadScene(level);
+
+    }
 }
