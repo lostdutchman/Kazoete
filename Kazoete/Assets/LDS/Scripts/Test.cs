@@ -33,231 +33,46 @@ public class Test : MonoBehaviour {
 
     public void GetQuestion()
     {
-        switch(currentLevel)
+        int thisAnswer = UnityEngine.Random.Range(1, 100000);
+        number.text = thisAnswer.ToString();
+        correctAnswer = (UnityEngine.Random.Range(0, 6));
+        List<int> used = new List<int>();
+        used.Add(thisAnswer);
+        print(thisAnswer);
+        for (int i = 0; i < 6; i++)
         {
-            case 1: Level1(); break;
-            case 2: Level2(); break;
-            case 3: Level3(); break;
-            case 4: Level4(); break;
-            case 5: Level5(); break;
-            case 6: Level6(); break;
-            default: Level7(); break;
-        }
-    }
-
-    private void Level1()
-    {
-        if (highscore >= 10)
-        {
-            LevelUp();
-            GetQuestion();
-        }
-        else
-        {
-            number.text = (highscore + 1).ToString();
-            correctAnswer = (UnityEngine.Random.Range(0, 6));
-            List<int> used = new List<int>();
-            used.Add(highscore + 1);
-            for(int i = 0; i < 6; i++ )
+            //Get each wrong number
+            int wrongAnswer = 0;
+            //Make it harder for people by shuffling numbers, but in case the numbers cannot be shuffled still pick random close numbers
+            if (thisAnswer > 99)
             {
-                int wrongAnswer = UnityEngine.Random.Range(1, 11);
-                if (!used.Contains(wrongAnswer))
+                if (UnityEngine.Random.Range(0, 2) == 1) //1 in 3 chance of using random number
                 {
-                    buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
-                    used.Add(wrongAnswer);
+                    wrongAnswer = UnityEngine.Random.Range(thisAnswer - 10, thisAnswer + 10);
+                    print("Random: " + wrongAnswer);
                 }
                 else
                 {
-                    i--;
+                    wrongAnswer = Shuffle(GetIntArray(thisAnswer));
+                    print("Shuffle: " + wrongAnswer);
                 }
             }
-            buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(highscore + 1);
-        }
-    }
-
-    private void Level2()
-    {
-        if (highscore >= 25)
-        {
-            LevelUp();
-            GetQuestion();
-        }
-        else
-        {
-            number.text = (highscore + 1).ToString();
-            correctAnswer = (UnityEngine.Random.Range(0, 6));
-            List<int> used = new List<int>();
-            used.Add(highscore + 1);
-            for (int i = 0; i < 6; i++)
+            else
             {
-                int wrongAnswer = UnityEngine.Random.Range(11, 26);
-                if (!used.Contains(wrongAnswer))
-                {
-                    buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
-                    used.Add(wrongAnswer);
-                }
-                else
-                {
-                    i--;
-                }
+                wrongAnswer = UnityEngine.Random.Range(thisAnswer - 10, thisAnswer + 10);
             }
-            buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(highscore + 1);
-        }
-    }
-
-    private void Level3()
-    {
-        if (highscore >= 45)
-        {
-            LevelUp();
-            GetQuestion();
-        }
-        else
-        {
-            int thisAnswer = UnityEngine.Random.Range(10, 100);
-            number.text = thisAnswer.ToString();
-            correctAnswer = (UnityEngine.Random.Range(0, 6));
-            List<int> used = new List<int>();
-            used.Add(thisAnswer);
-            for (int i = 0; i < 6; i++)
+            //Makes sure im not using an already used number
+            if (!used.Contains(wrongAnswer))
             {
-                int wrongAnswer = UnityEngine.Random.Range(10, 100);
-                if (!used.Contains(wrongAnswer))
-                {
-                    buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
-                    used.Add(wrongAnswer);
-                }
-                else
-                {
-                    i--;
-                }
+                buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
+                used.Add(wrongAnswer);
             }
-            buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(thisAnswer);
-        }
-    }
-
-    private void Level4()
-    {
-        if (highscore >= 65)
-        {
-            LevelUp();
-            GetQuestion();
-        }
-        else
-        {
-            int thisAnswer = UnityEngine.Random.Range(100, 1000);
-            number.text = thisAnswer.ToString();
-            correctAnswer = (UnityEngine.Random.Range(0, 6));
-            List<int> used = new List<int>();
-            used.Add(thisAnswer);
-            for (int i = 0; i < 6; i++)
+            else
             {
-                int wrongAnswer = UnityEngine.Random.Range(100, 1000);
-                if (!used.Contains(wrongAnswer))
-                {
-                    buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
-                    used.Add(wrongAnswer);
-                }
-                else
-                {
-                    i--;
-                }
+                i--;
             }
-            buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(thisAnswer);
         }
-    }
-
-    private void Level5()
-    {
-        if (highscore >= 85)
-        {
-            LevelUp();
-            GetQuestion();
-        }
-        else
-        {
-            int thisAnswer = UnityEngine.Random.Range(1000, 10000);
-            number.text = thisAnswer.ToString();
-            correctAnswer = (UnityEngine.Random.Range(0, 6));
-            List<int> used = new List<int>();
-            used.Add(thisAnswer);
-            for (int i = 0; i < 6; i++)
-            {
-                int wrongAnswer = UnityEngine.Random.Range(10, 100);
-                if (!used.Contains(wrongAnswer))
-                {
-                    buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
-                    used.Add(wrongAnswer);
-                }
-                else
-                {
-                    i--;
-                }
-            }
-            buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(thisAnswer);
-        }
-    }
-
-    private void Level6()
-    {
-        if (highscore >= 105)
-        {
-            LevelUp();
-            GetQuestion();
-        }
-        else
-        {
-            int thisAnswer = UnityEngine.Random.Range(10000, 100000);
-            number.text = thisAnswer.ToString();
-            correctAnswer = (UnityEngine.Random.Range(0, 6));
-            List<int> used = new List<int>();
-            used.Add(thisAnswer);
-            for (int i = 0; i < 6; i++)
-            {
-                int wrongAnswer = UnityEngine.Random.Range(10, 100);
-                if (!used.Contains(wrongAnswer))
-                {
-                    buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
-                    used.Add(wrongAnswer);
-                }
-                else
-                {
-                    i--;
-                }
-            }
-            buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(thisAnswer);
-        }
-    }
-
-    private void Level7()
-    {
-        if (highscore >= 125)
-        {
-            LevelUp();
-            GetQuestion();
-        }
-        else
-        {
-            int thisAnswer = UnityEngine.Random.Range(1, 100000);
-            number.text = thisAnswer.ToString();
-            correctAnswer = (UnityEngine.Random.Range(0, 6));
-            List<int> used = new List<int>();
-            used.Add(thisAnswer);
-            for (int i = 0; i < 6; i++)
-            {
-                int wrongAnswer = UnityEngine.Random.Range(10, 100);
-                if (!used.Contains(wrongAnswer))
-                {
-                    buttons[i].GetComponentInChildren<Text>().text = Translate(wrongAnswer);
-                    used.Add(wrongAnswer);
-                }
-                else
-                {
-                    i--;
-                }
-            }
-            buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(thisAnswer);
-        }
+        buttons[correctAnswer].GetComponentInChildren<Text>().text = Translate(thisAnswer);
     }
 
     public void CheckAnswer(int answer)
@@ -467,6 +282,26 @@ public class Test : MonoBehaviour {
         }
         listOfInts.Reverse();
         return listOfInts.ToArray();
+    }
+
+    int Shuffle(int[] source)
+    {
+        int result = 0;
+        //Shuffle int array
+        for (var i = source.Length - 1; i > 0; i--)
+        {
+            var r = UnityEngine.Random.Range(0, i);
+            var tmp = source[i];
+            source[i] = source[r];
+            source[r] = tmp;
+        }
+        //return iterator as animation int
+        for (int i = 0; i < source.Length; i++)
+        {
+            result += source[i] * Convert.ToInt32(Math.Pow(10, source.Length - i - 1));
+        }
+
+        return result;
     }
 
 }
