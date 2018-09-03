@@ -7,28 +7,45 @@ using UnityEngine.UI;
 public class Test : MonoBehaviour {
 
     //Test Manager
-    public int wrongThreshold = 3;
-    public Text score, level, number, gameOverScore;
+    public int questionsToGo = 20;
+    public float penaltyTime = 5;
+    public Text timer, toGo, number, gameOverScore, gameOverHighScore;
     public GameObject[] buttons;
     public int gameMode = 3; //1 = Romanji, 2 = Kana, 3 = Kanji
     public AudioSource audioSource;
     public AudioClip wrongFX, rightFX;
     public GameObject Game, GameOver;
 
-    private int currentLevel = 1;
-    private int highscore = 0;
+    private float score = 0;
+    private float highscore = 6039;
 
     //Test
     private int correctAnswer = 0;
 
-
     // Use this for initialization
     void Start () {
         gameMode = PlayerPrefs.GetInt("game_mode");
+        highscore = PlayerPrefs.GetFloat("high_score");
         Game.SetActive(true);
         GameOver.SetActive(false);
-        ScoreBoard();
         GetQuestion();
+    }
+
+    void Update()
+    {
+        score += Time.deltaTime;
+        timer.text = FormatTime(score);
+    }
+
+    string FormatTime(float time)
+    {
+        int intTime = (int)time;
+        int minutes = intTime / 60;
+        int seconds = intTime % 60;
+        float fraction = time * 1000;
+        fraction = (fraction % 1000);
+        string timeText = String.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, fraction);
+        return timeText;
     }
 
     public void GetQuestion()
@@ -38,7 +55,6 @@ public class Test : MonoBehaviour {
         correctAnswer = (UnityEngine.Random.Range(0, 6));
         List<int> used = new List<int>();
         used.Add(thisAnswer);
-        print(thisAnswer);
         for (int i = 0; i < 6; i++)
         {
             //Get each wrong number
@@ -49,12 +65,10 @@ public class Test : MonoBehaviour {
                 if (UnityEngine.Random.Range(0, 2) == 1) //1 in 3 chance of using random number
                 {
                     wrongAnswer = UnityEngine.Random.Range(thisAnswer - 10, thisAnswer + 10);
-                    print("Random: " + wrongAnswer);
                 }
                 else
                 {
                     wrongAnswer = Shuffle(GetIntArray(thisAnswer));
-                    print("Shuffle: " + wrongAnswer);
                 }
             }
             else
@@ -81,52 +95,31 @@ public class Test : MonoBehaviour {
         {
             audioSource.clip = rightFX;
             audioSource.Play();
-            highscore++;
-            GetQuestion();
+            questionsToGo--;
+            toGo.text = questionsToGo.ToString();
+            if(questionsToGo <= 0)
+            {
+                Game.SetActive(false);
+                GameOver.SetActive(true);
+                if(score < highscore)
+                {
+                    highscore = score;
+                }
+                gameOverScore.text = FormatTime(score);
+                gameOverHighScore.text = FormatTime(highscore);
+                PlayerPrefs.SetFloat("high_score", score);
+            }
+            else
+            {
+                GetQuestion();
+            }
         }
         else
         {
             audioSource.clip = wrongFX;
             audioSource.Play();
-            wrongThreshold--;
-            ScoreBoard();
-            if(wrongThreshold <= 0)
-            {
-                Game.SetActive(false);
-                GameOver.SetActive(true);
-                gameOverScore.text = highscore.ToString();
-            }
+            score += penaltyTime;
         }
-    }
-
-    private void LevelUp()
-    {
-        currentLevel++;
-        GameObject.FindObjectOfType<BackdropShuffle>().Change();
-
-        switch (currentLevel)
-        {
-            case 1: level.text = "Level 1!"; break;
-            case 2: level.text = "Level 2!"; break;
-            case 3: level.text = "Level 3!"; break;
-            case 4: level.text = "Level 4!"; break;
-            case 5: level.text = "Level 5!"; break;
-            case 6: level.text = "Level 6!"; break;
-            default: level.text = "Endless!"; break;
-        }
-
-        wrongThreshold++;
-        ScoreBoard();
-    }
-
-    private void ScoreBoard()
-    {
-        string temp = "";
-        for(int i = 0; i < wrongThreshold; i++)
-        {
-            temp += "X";
-        }
-        score.text = temp;
     }
 
     private string Translate(int num)

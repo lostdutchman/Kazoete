@@ -1,6 +1,6 @@
 WebGL
 PlayerPath?
-C:/Users/Jeremy/Downloads/Kazoete(Web)
+C:/Users/Jeremy/Downloads/Kazoete/Web
 SceneListBegin?
 Assets/LDS/Scenes/Title.unity
 Assets/LDS/Scenes/Game.unity
@@ -143,7 +143,7 @@ da21fc3f8056b1f91c3dd09c7bf4f90a UnityEngine.Networking.dll:UnityEngine.Networki
 fc061f3ae8a876c0687e86378d4a447c UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 7ca56e063bd071986fff4f513cc4f477 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 72a8523b432c0a5317826b7a9e0a0e79 Unity.TextMeshPro.dll:TMPro.PackageResourceImporterWindow
-9301e77f75aa03b06ac6f1562b482ed9 Assembly-CSharp.dll:.Test
+106444f1e0159ba1eb58c31bfb6c400b Assembly-CSharp.dll:.Test
 e53cc67d84060d628c7f03fc725766d8 Unity.TextMeshPro.dll:TMPro.TMP_FontAsset
 392c5b921098bd4c139d9146d0efa6d7 Unity.TextMeshPro.dll:TMPro.TMP_Settings
 486cd95c82d8305219c352c06b776e1f UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
